@@ -1,7 +1,7 @@
-l=[9,8,7,6,5,4]
+l=[6,7,3,4,5,2,3,4,8,2,9]
 n=len(l)
 print(n)
-k=3
+k=5
 c=1
 for i in range(n-1):
     flag=False
