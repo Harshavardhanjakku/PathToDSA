@@ -8,7 +8,7 @@ def check(l,h,k):
 def binarysearch(l,h):
     low=1
     high=max(l)
-    res=
+    res=1
     while low<=high:
         mid=(low+high)//2
         if check(l,h,mid)<h:
