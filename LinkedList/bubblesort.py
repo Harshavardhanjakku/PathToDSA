@@ -14,21 +14,29 @@ class LinkedList:
         while temp.next:
             temp=temp.next
         temp.next=newnode
-    def deleteAtbegin(self):
-        if self.head is None:
-            print("Stack Underflow")
+    def sortll(self):
+        if self.head is None or self.head.next is None:
+            return
+        flag = True
+        while flag:
+            flag = False
+            current = self.head
+            while current.next:
+                if current.data > current.next.data:
+                    current.data, current.next.data = current.next.data, current.data
+                    flag = True
+                current = current.next
+
     def display(self):
         temp=self.head
         while temp:
             print(temp.data,end=" ")
             temp=temp.next
-        print()
 obj=LinkedList()
 obj.insertAtEnd(3)
 obj.insertAtEnd(2)
 obj.insertAtEnd(7)
 obj.insertAtEnd(1)
 obj.insertAtEnd(6)
-obj.display()
-obj.deleteAtbegin()
+obj.sortll()
 obj.display()

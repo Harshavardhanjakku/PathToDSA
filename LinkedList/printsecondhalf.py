@@ -14,21 +14,23 @@ class LinkedList:
         while temp.next:
             temp=temp.next
         temp.next=newnode
-    def deleteAtbegin(self):
-        if self.head is None:
-            print("Stack Underflow")
-    def display(self):
-        temp=self.head
+    def traverseuptomid(self):
+        slow=self.head
+        fast=self.head
+        while fast and fast.next:
+            slow=slow.next
+            fast=fast.next.next
+        self.display(slow)
+    def display(self,mynode):
+        temp=mynode
         while temp:
-            print(temp.data,end=" ")
+            print(temp.data)
             temp=temp.next
-        print()
 obj=LinkedList()
-obj.insertAtEnd(3)
-obj.insertAtEnd(2)
-obj.insertAtEnd(7)
-obj.insertAtEnd(1)
-obj.insertAtEnd(6)
-obj.display()
-obj.deleteAtbegin()
-obj.display()
+obj.insertAtEnd(10)
+obj.insertAtEnd(20)
+obj.insertAtEnd(30)
+obj.insertAtEnd(40)
+obj.insertAtEnd(50)
+obj.insertAtEnd(60)
+obj.traverseuptomid()
