@@ -7,7 +7,7 @@ Search in Bst
 DFS Traversal
 Count of Leaf nodes
 All paths form root to leaves
-LeftView OF TREE
+Views OF TREE
 '''
 class Node:
     def __init__(self, key):
@@ -15,7 +15,7 @@ class Node:
         self.left = None
         self.right = None
 
-# Insert node into BST
+# Insert node
 def insert(root, key):
     if root is None:
         return Node(key)
@@ -25,50 +25,44 @@ def insert(root, key):
         root.right = insert(root.right, key)
     return root
 
-# Inorder Traversal
+# Traversals
 def inorder(root):
     if root:
         inorder(root.left)
         print(root.data, end=' ')
         inorder(root.right)
 
-# Preorder Traversal
 def preorder(root):
     if root:
         print(root.data, end=' ')
         preorder(root.left)
         preorder(root.right)
 
-# Postorder Traversal
 def postorder(root):
     if root:
         postorder(root.left)
         postorder(root.right)
         print(root.data, end=' ')
 
-# Sum of all nodes
+# Sum
 def sum_nodes(root):
     if root is None:
         return 0
     return root.data + sum_nodes(root.left) + sum_nodes(root.right)
 
-# Sum of even nodes
 def sum_even_nodes(root):
     if root is None:
         return 0
-    s = 0
-    if root.data % 2 == 0:
-        s += root.data
-    s += sum_even_nodes(root.left) + sum_even_nodes(root.right)
-    return s
+    s = root.data if root.data % 2 == 0 else 0
+    return s + sum_even_nodes(root.left) + sum_even_nodes(root.right)
 
-# Height of the tree
+# Height
 def height(root):
     if root is None:
         return 0
     return 1 + max(height(root.left), height(root.right))
 
-# Search in BST
+# Search
 def search_bst(root, key):
     if root is None:
         return False
@@ -79,7 +73,7 @@ def search_bst(root, key):
     else:
         return search_bst(root.right, key)
 
-# DFS traversal (preorder)
+# DFS
 def dfs(root):
     if root is None:
         return
@@ -92,7 +86,7 @@ def dfs(root):
         if current.left:
             stack.append(current.left)
 
-# Count leaf nodes
+# Leaf count
 def count_leaf_nodes(root):
     if root is None:
         return 0
@@ -100,7 +94,7 @@ def count_leaf_nodes(root):
         return 1
     return count_leaf_nodes(root.left) + count_leaf_nodes(root.right)
 
-# Print all root-to-leaf paths
+# All root-to-leaf paths
 def print_all_paths(root, path=None):
     if path is None:
         path = []
@@ -125,27 +119,49 @@ def level_order_traversal(root):
             queue.append(current.left)
         if current.right:
             queue.append(current.right)
-def topview(root):
-    c=0
-    l=[(root,c)]
-    d={}
-    while l:
-        curr,c=l.pop(0)
-        if c not in d:
-            d[c]=curr.data
-        if curr.left!=None:
-            l.append((curr.left,c-1))
-        if curr.right!=None:
-            l.append((curr.right,c+1))
 
+# Left View
+def left_view(root, c):
+    if root is None:
+        return
+    if c not in left_view_dict:
+        left_view_dict[c] = root.data
+    left_view(root.left, c + 1)
+    left_view(root.right, c + 1)
 
+# Right View
+def right_view(root, c):
+    if root is None:
+        return
+    if c not in right_view_dict:
+        right_view_dict[c] = root.data
+    right_view(root.right, c + 1)
+    right_view(root.left, c + 1)
 
-# Sample input and tree construction
+# Top View using vertical distance
+def top_view(root, c, l):
+    if root is None:
+        return
+    if c not in top_view_dict or l < top_view_dict[c][1]:
+        top_view_dict[c] = (root.data, l)
+    top_view(root.left, c - 1, l + 1)
+    top_view(root.right, c + 1, l + 1)
+
+# Bottom View using vertical distance
+def bottom_view(root, c, l):
+    if root is None:
+        return
+    if c not in bottom_view_dict or l >= bottom_view_dict[c][1]:
+        bottom_view_dict[c] = (root.data, l)
+    bottom_view(root.left, c - 1, l + 1)
+    bottom_view(root.right, c + 1, l + 1)
+
+# Build tree
 values = [50, 30, 20, 40, 70, 60, 80]
 root = None
 for val in values:
     root = insert(root, val)
-    
+
 # Outputs
 print("Inorder Traversal:")
 inorder(root)
@@ -165,5 +181,31 @@ print("All Root-to-Leaf Paths:")
 print_all_paths(root)
 print("Level Order Traversal:")
 level_order_traversal(root)
-print()
-topview(root)
+
+# Views with global dicts
+left_view_dict = {}
+right_view_dict = {}
+top_view_dict = {}
+bottom_view_dict = {}
+
+left_view(root, 0)
+right_view(root, 0)
+top_view(root, 0, 0)
+bottom_view(root, 0, 0)
+
+print("\nLeft View of Tree:")
+for k in sorted(left_view_dict):
+    print(left_view_dict[k], end=' ')
+
+print("\nRight View of Tree:")
+for k in sorted(right_view_dict):
+    print(right_view_dict[k], end=' ')
+
+print("\nTop View of Tree:")
+for k in sorted(top_view_dict):
+    print(top_view_dict[k][0], end=' ')
+
+print("\nBottom View of Tree:")
+for k in sorted(bottom_view_dict):
+    print(bottom_view_dict[k][0], end=' ')
+

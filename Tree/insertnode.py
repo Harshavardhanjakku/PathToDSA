@@ -130,4 +130,3 @@ print(f"The element {val} is there in tree : {mytree.SearchNode(mytree.root, val
 print(f"The element {val} is there in tree (BST Search) : {mytree.NagarajSearch(mytree.root, val)}")
 mytree.Levelordertraaversal(mytree.root)
 mytree.Countnodesusingtraversal(mytree.root)
-mytree.TopView(mytree.root,0)

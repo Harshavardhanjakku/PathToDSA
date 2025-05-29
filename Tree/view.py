@@ -1,14 +1,3 @@
-'''Inserting,Preorder,postorder,inorder
-height of tree
-Insertion into BST
-Sum of all nodes
-Sum of even nodes
-Search in Bst
-DFS Traversal
-Count of Leaf nodes
-All paths form root to leaves
-LeftView OF TREE
-'''
 class Node:
     def __init__(self, key):
         self.data = key
@@ -79,7 +68,7 @@ def search_bst(root, key):
     else:
         return search_bst(root.right, key)
 
-# DFS traversal (preorder)
+# DFS traversal (Preorder using stack)
 def dfs(root):
     if root is None:
         return
@@ -125,27 +114,46 @@ def level_order_traversal(root):
             queue.append(current.left)
         if current.right:
             queue.append(current.right)
+
+# Top View of Binary Tree
 def topview(root):
-    c=0
-    l=[(root,c)]
-    d={}
-    while l:
-        curr,c=l.pop(0)
-        if c not in d:
-            d[c]=curr.data
-        if curr.left!=None:
-            l.append((curr.left,c-1))
-        if curr.right!=None:
-            l.append((curr.right,c+1))
+    if not root:
+        return
+    queue = [(root, 0)]
+    top_nodes = {}
+    while queue:
+        node, hd = queue.pop(0)
+        if hd not in top_nodes:
+            top_nodes[hd] = node.data
+        if node.left:
+            queue.append((node.left, hd - 1))
+        if node.right:
+            queue.append((node.right, hd + 1))
+    for key in sorted(top_nodes):
+        print(top_nodes[key], end=' ')
 
-
+# Left View of Binary Tree
+def left_view(root):
+    if not root:
+        return
+    queue = [(root, 0)]
+    max_level = -1
+    while queue:
+        node, level = queue.pop(0)
+        if level > max_level:
+            print(node.data, end=' ')
+            max_level = level
+        if node.left:
+            queue.append((node.left, level + 1))
+        if node.right:
+            queue.append((node.right, level + 1))
 
 # Sample input and tree construction
 values = [50, 30, 20, 40, 70, 60, 80]
 root = None
 for val in values:
     root = insert(root, val)
-    
+
 # Outputs
 print("Inorder Traversal:")
 inorder(root)
@@ -165,5 +173,7 @@ print("All Root-to-Leaf Paths:")
 print_all_paths(root)
 print("Level Order Traversal:")
 level_order_traversal(root)
-print()
+print("\nTop View of Tree:")
 topview(root)
+print("\nLeft View of Tree:")
+left_view(root)

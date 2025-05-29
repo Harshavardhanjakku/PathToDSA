@@ -50,6 +50,14 @@ class Tree:
             return 1+max(self.HeightofTree(root.right),self.HeightofTree(root.left))
         else:
             return -1
+    def checkbalanced(self,root):
+        if root is None:
+            return True
+        l=self.HeightofTree(root.left)
+        r=self.HeightofTree(root.right)
+        if abs(l-r)>1:
+            return False
+        return self.checkbalanced(root.left) and self.checkbalanced(root.right) 
     def SearchNode(self,root,val):
         if root:
             if root.data==val:
@@ -81,15 +89,32 @@ class Tree:
             paths.append([root.data] + path)
         
         return paths
-    # def leftview(self,root,c):
-    #     if root is None:
-    #         return 
-    #     if c not in d:
-    #         d[c]=root.data
-    #     self.leftview(root.left)
-    #     self.leftview(root.right)
-
-
+    def LCA(self,root,p,q):
+        a=self.findpath(root,p)
+        b=self.findpath(root,q)
+        print(a,b)
+    def findpath(self,root,val):
+        temp=root
+        path=[]
+        while temp is not None:
+            if temp.data>val:
+                path.append(temp.data)
+                temp=temp.left
+            elif temp.data<val:
+                path.append(temp.data)
+                temp=temp.right
+            else:
+                return path
+        return path
+    def OptimisedLCA(self,root,p,q):
+        if root is None :
+            return "No node"
+        elif root.data>=p and root.data<q:
+            return root.data
+        elif root.data>p:
+            return self.OptimisedLCA(root.left,p,q)
+        else:
+            return self.OptimisedLCA(root.right,p,q) 
 mytree=Tree(10) 
 mytree.left=Node(5)
 mytree.right=Node(20)
@@ -113,4 +138,8 @@ val=8
 print(f"The element {val} is there in tree : {mytree.SearchNode(mytree,val)}")
 print(f"The element {val} is there in tree : {mytree.NagarajSearch(mytree,val)}")
 print(f"The number of leaf nodes is {mytree.countofleafnodes(mytree)}")
-print(f"The number of leaf nodes is {mytree.printpaths(mytree)}")
+print(f"The number of paths is {mytree.printpaths(mytree)}")
+print("______________")
+mytree.LCA(mytree,8,12)
+mytree.OptimisedLCA(mytree,2,8)
+mytree.checkbalanced(mytree)
