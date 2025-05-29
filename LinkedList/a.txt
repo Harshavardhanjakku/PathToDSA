@@ -1,0 +1,20 @@
+def find_loop_length(head):
+    if not head or not head.next:
+        return 0  # No loop
+
+    slow = head
+    fast = head
+
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+        if slow == fast:
+            # Loop detected
+            count = 0
+            slow = slow.next  # Move slow one step to start counting
+            while slow != fast:
+                count += 1
+                slow = slow.next
+            return count + 1  # Add 1 to include the starting node
+    return 0  # No loop
